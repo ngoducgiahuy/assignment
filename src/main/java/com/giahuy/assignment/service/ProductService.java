@@ -3,6 +3,7 @@ package com.giahuy.assignment.service;
 import java.util.HashMap;
 import java.util.List;
 
+import com.giahuy.assignment.DTO.ProductDTO;
 import com.giahuy.assignment.entity.Product;
 
 public interface ProductService {
@@ -10,9 +11,13 @@ public interface ProductService {
 	
 	public Product getProductByID(long productId);
 	
-	public Product saveProduct(Product product, long categoryId);
+	public Product saveProduct(Product product);
 	
-	public Product updateProduct(long categoryId, long productId, Product product);
+	public Product updateProduct(long productId, Product product);
 	
-	public HashMap<String, String> deleteProductById(long productId);
+	public boolean deleteProductById(long productId);
+
+	public ProductDTO convertToDTO(Product product);
+	
+	public Product convertToEntity(ProductDTO productDTO);
 }

@@ -1,8 +1,8 @@
 package com.giahuy.assignment.service;
 
-import java.util.HashMap;
 import java.util.List;
 
+import com.giahuy.assignment.DTO.CategoryDTO;
 import com.giahuy.assignment.entity.Category;
 
 public interface CategoryService {
@@ -14,5 +14,9 @@ public interface CategoryService {
 	
 	public Category updateCategory(long categoryId, Category categoryNewData);
 	
-	public HashMap<String, String> deleteCategoryById(long categoryId);
+	public boolean deleteCategoryById(long categoryId);
+	
+	public CategoryDTO convertToDTO(Category category);
+	
+	public Category convertToEntity(CategoryDTO categoryDTO);
 }

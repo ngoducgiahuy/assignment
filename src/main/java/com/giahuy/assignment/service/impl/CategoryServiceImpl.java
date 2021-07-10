@@ -1,13 +1,13 @@
 package com.giahuy.assignment.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.giahuy.assignment.DTO.CategoryDTO;
 import com.giahuy.assignment.entity.Category;
-import com.giahuy.assignment.exception.DataNotFoundException;
 import com.giahuy.assignment.repository.CategoryRepository;
 import com.giahuy.assignment.service.CategoryService;
 
@@ -17,6 +17,9 @@ public class CategoryServiceImpl implements CategoryService{
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	@Override
 	public List<Category> getAllCategory() {
 		return categoryRepository.findAll();
@@ -24,8 +27,7 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public Category getCategoryByID(long categoryId) {
-		return categoryRepository.findById(categoryId)
-								.orElseThrow(()->categoryNotFoundException(categoryId));
+		return categoryRepository.findById(categoryId).orElse(null);
 	}
 
 	@Override
@@ -35,25 +37,33 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public Category updateCategory(long categoryId, Category categoryNewData) {
-		return categoryRepository.findById(categoryId).map(category -> {
-				category.setName(categoryNewData.getName());
-				category.setDescription(categoryNewData.getDescription());
-				return categoryRepository.save(category);
-		}).orElseThrow(()->categoryNotFoundException(categoryId));
+		if(categoryRepository.existsById(categoryId)) {
+			categoryNewData.setId(categoryId);
+			return categoryRepository.save(categoryNewData);
+		}
+		return null;
 	}
 
 	@Override
-	public HashMap<String, String> deleteCategoryById(long categoryId) {
-		HashMap<String, String> result_message = new HashMap<String, String>();
+	public boolean deleteCategoryById(long categoryId) {
 		return categoryRepository.findById(categoryId).map(category -> {
 				categoryRepository.delete(category);
-				result_message.put("message", "Delete category id " + categoryId + " successfully!");
-				return result_message;
-		}).orElseThrow(()->categoryNotFoundException(categoryId));
+				return true;
+		}).orElse(false);
 	}
 	
-	public DataNotFoundException categoryNotFoundException(long categoryId) {
-		return new DataNotFoundException("Category with id = " + categoryId + "not found");
+	@Override
+	public CategoryDTO convertToDTO(Category category) {
+		CategoryDTO categoryDTO = modelMapper.map(category, CategoryDTO.class);
+		return categoryDTO;
 	}
+	
+	@Override
+	public Category convertToEntity(CategoryDTO categoryDTO) {
+		Category category = modelMapper.map(categoryDTO, Category.class);
+		return category;
+	}
+	
+	
 	
 }
