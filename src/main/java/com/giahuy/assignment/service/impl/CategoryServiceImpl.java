@@ -63,6 +63,12 @@ public class CategoryServiceImpl implements CategoryService{
 		Category category = modelMapper.map(categoryDTO, Category.class);
 		return category;
 	}
+
+	@Override
+	public List<Category> findCategoryByName(String name) {
+		List<Category> categoriesByName = categoryRepository.findByName(name);
+		return (categoriesByName.isEmpty()) ? null : categoriesByName;
+	}
 	
 	
 	

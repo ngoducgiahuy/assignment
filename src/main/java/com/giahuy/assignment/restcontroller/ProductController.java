@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -84,5 +85,11 @@ public class ProductController {
 	
 	public DataNotFoundException categoryNotFoundException(long categoryId) {
 		return new DataNotFoundException("Product with id = " + categoryId + "not found");
+	}
+	
+	@GetMapping("/categories/{categoryId}/products") 
+	public List<ProductDTO> getProductsByCategoryId (@PathVariable long categoryId){
+		List<Product> resultList = productService.getProductsByCategoryId(categoryId);
+		return resultList.stream().map(productService::convertToDTO).collect(Collectors.toList());
 	}
 }

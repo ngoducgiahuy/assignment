@@ -19,4 +19,6 @@ public interface CategoryService {
 	public CategoryDTO convertToDTO(Category category);
 	
 	public Category convertToEntity(CategoryDTO categoryDTO);
+	
+	public List<Category> findCategoryByName(String name);
 }

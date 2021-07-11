@@ -94,6 +94,12 @@ public class ProductServiceImpl implements ProductService{
 		product.setCategory(categoryForProduct);
 		return product;
 	}
+
+	@Override
+	public List<Product> getProductsByCategoryId(long categoryId) {
+		List<Product> resultList = productRepository.findByCategory_Id(categoryId);
+		return (resultList.isEmpty()) ? null : resultList;
+	}
 	
 
 	

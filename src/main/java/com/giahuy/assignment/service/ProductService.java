@@ -1,6 +1,5 @@
 package com.giahuy.assignment.service;
 
-import java.util.HashMap;
 import java.util.List;
 
 import com.giahuy.assignment.DTO.ProductDTO;
@@ -20,4 +19,6 @@ public interface ProductService {
 	public ProductDTO convertToDTO(Product product);
 	
 	public Product convertToEntity(ProductDTO productDTO);
+	
+	public List<Product> getProductsByCategoryId(long categoryId);
 }
