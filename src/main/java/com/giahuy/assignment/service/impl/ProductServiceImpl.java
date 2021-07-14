@@ -46,23 +46,23 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public Product updateProduct(long productId, Product productNewData) {
-//		return productRepository.findById(productId).map(product -> {
-//								product.setCreatedDate(productNewData.getCreatedDate());
-//								product.setDescription(productNewData.getDescription());
-//								product.setCategory(productNewData.getCategory());
-//								product.setImage(productNewData.getImage());
-//								product.setName(productNewData.getName());
-//								product.setPrice(productNewData.getPrice());
-//								product.setRatingPoint(productNewData.getRatingPoint());
-//								product.setUpdatedDate(LocalDateTime.now());
-//								return productRepository.save(product);
-//		}).orElse(null);
-		if(productRepository.existsById(productId)) {
-			productNewData.setId(productId);
-			productNewData.setUpdatedDate(LocalDateTime.now());
-			return productRepository.save(productNewData);
-		}
-		return null;
+		return productRepository.findById(productId).map(product -> {
+								product.setCreatedDate(productNewData.getCreatedDate());
+								product.setDescription(productNewData.getDescription());
+								product.setCategory(productNewData.getCategory());
+								product.setImage(productNewData.getImage());
+								product.setName(productNewData.getName());
+								product.setPrice(productNewData.getPrice());
+								product.setRatingPoint(productNewData.getRatingPoint());
+								product.setUpdatedDate(LocalDateTime.now());
+								return productRepository.save(product);
+		}).orElse(null);
+//		if(productRepository.existsById(productId)) {
+//			productNewData.setId(productId);
+//			productNewData.setUpdatedDate(LocalDateTime.now());
+//			return productRepository.save(productNewData);
+//		}
+//		return null;
 	}
 
 	@Override

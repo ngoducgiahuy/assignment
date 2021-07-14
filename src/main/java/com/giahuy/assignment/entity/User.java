@@ -3,6 +3,7 @@ package com.giahuy.assignment.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,20 +25,19 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(updatable = false, insertable = false)
 	private long id;
 	
-	@NotBlank
 	@Size(min = 3, max = 20)
+	@Column(updatable = false)
 	private String username;
 	
-	@NotBlank
 	@Email
+	@Column(updatable = false)
 	private String email;
 	
-	@NotBlank
 	private String password;
 	
-	@NotBlank
 	private String phone;
 	
 	private boolean banned;
@@ -56,18 +56,6 @@ public class User {
 	public User() {
 		
 	}
-	
-	
-
-//	public User(String username, String name, String email,
-//			String password, String phone, String address) {
-//		this.username = username;
-//		this.name = name;
-//		this.email = email;
-//		this.password = password;
-//		this.phone = phone;
-//		this.address = address;
-//	}
 
 	public User(@NotBlank @Size(min = 3, max = 20) String username, @NotBlank @Email String email,
 			@NotBlank @Size(min = 6, max = 30) String password, @NotBlank String phone, String address,
@@ -130,7 +118,7 @@ public class User {
 		this.phone = phone;
 	}
 
-	public boolean isBanned() {
+	public boolean getBanned() {
 		return banned;
 	}
 

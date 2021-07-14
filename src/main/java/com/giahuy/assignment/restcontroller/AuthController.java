@@ -50,38 +50,42 @@ public class AuthController {
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+		// authenticate function return true if the input is valid, exeption if invalid and null if it can't decide
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		// Set the principal and more detail for the interface Authentication
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+		// Generate the jwt token through the principal above after parse into UserDetail we have defined
 		String jwt = jwtUtils.generateJwtToken(authentication);
-
+		// Get the principal and parse into our defined class named UserDetails
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
+		// Get roles
 		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
-
+		
 		return ResponseEntity.ok(
 				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
 	}
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
-
+		// Check if username is valid?
 		if (userRepository.existsByUsername(signupRequest.getUsername())) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
 		}
-
+		// Check if email is valid?
 		if (userRepository.existsByEmail(signupRequest.getEmail())) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
 		}
-
+		
+		// Create new User Object for register
 		User user = new User(signupRequest.getUsername(), signupRequest.getEmail(),
 				encoder.encode(signupRequest.getPassword()), signupRequest.getPhone(), signupRequest.getAddress(),
 				signupRequest.getName());
-		System.out.println("Hiiiiiiiiiiiiiiiiii");
 		Set<String> strRoles = signupRequest.getRole();
 		Set<Role> roles = new HashSet<>();
-
+		
+		//Create role for user
 		if (strRoles == null) {
 			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
