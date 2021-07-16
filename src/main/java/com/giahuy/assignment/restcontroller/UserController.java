@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.giahuy.assignment.DTO.UserDTO;
 import com.giahuy.assignment.entity.User;
 import com.giahuy.assignment.exception.UserNotFoundExeption;
-import com.giahuy.assignment.repository.UserRepository;
 import com.giahuy.assignment.service.UserService;
 
 @RestController

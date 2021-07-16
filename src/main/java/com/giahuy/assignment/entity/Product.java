@@ -1,7 +1,10 @@
 package com.giahuy.assignment.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,9 +13,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="product")
@@ -42,12 +47,16 @@ public class Product {
 	@Column(name="updated_date")
 	private LocalDateTime updatedDate;
 	
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<Rating> ratings = new ArrayList<Rating>();
+	
 
 	public Product() {
 	}
 
-	public Product(Integer id, String name, Category category, String description, Float price, Float ratingPoint,
-			String image, LocalDateTime createdDate, LocalDateTime updatedDate) {
+	public Product(long id, String name, Category category, String description, Float price, Float ratingPoint,
+			String image, LocalDateTime createdDate, LocalDateTime updatedDate, List<Rating> ratings) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -58,6 +67,7 @@ public class Product {
 		this.image = image;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
+		this.ratings = ratings;
 	}
 
 	public long getId() {
@@ -131,6 +141,15 @@ public class Product {
 	public void setUpdatedDate(LocalDateTime localDateTime) {
 		this.updatedDate = localDateTime;
 	}
+
+	public List<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
+	
 	
 	
 }

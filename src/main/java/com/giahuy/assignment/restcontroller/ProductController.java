@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +49,7 @@ public class ProductController {
 	@PostMapping("/products")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
+	@PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
 	public ProductDTO saveProduct(@RequestBody ProductDTO newProductDTO) {
 		Product newProduct = productService.convertToEntity(newProductDTO);
 		if(newProduct==null) {
@@ -59,6 +61,7 @@ public class ProductController {
 	
 	@PutMapping("/products/{productId}")
 	@ResponseStatus(HttpStatus.OK)
+	@PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
 	public ProductDTO updateProduct(@RequestBody ProductDTO updateProductDTO, 
 								@PathVariable long productId) {
 		Product updateProduct = productService.convertToEntity(updateProductDTO);
@@ -73,6 +76,7 @@ public class ProductController {
 	}
 	
 	@DeleteMapping("/products/{productId}")
+	@PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
 	public ResponseEntity<Void> deleteProductById(@PathVariable long productId){
 		boolean result = productService.deleteProductById(productId);
 		return (result) ? new ResponseEntity<Void>(HttpStatus.OK) : new ResponseEntity<Void>(HttpStatus.NO_CONTENT);

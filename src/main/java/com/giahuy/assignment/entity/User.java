@@ -1,8 +1,11 @@
 package com.giahuy.assignment.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,11 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "user",schema = "public", uniqueConstraints = {@UniqueConstraint(columnNames = "email"),
@@ -53,6 +59,10 @@ public class User {
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<Rating> ratings = new ArrayList<Rating>();
+	
 	public User() {
 		
 	}
@@ -68,7 +78,31 @@ public class User {
 		this.name = name;
 	}
 
+	
 
+	public User(long id, @Size(min = 3, max = 20) String username, @Email String email, String password, String phone,
+			boolean banned, String address, @Size(min = 2, max = 80) String name, Set<Role> roles,
+			List<Rating> ratings) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.phone = phone;
+		this.banned = banned;
+		this.address = address;
+		this.name = name;
+		this.roles = roles;
+		this.ratings = ratings;
+	}
+
+	public List<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
 
 	public long getId() {
 		return id;

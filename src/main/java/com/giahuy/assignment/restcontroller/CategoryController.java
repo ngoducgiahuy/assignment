@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,6 +67,7 @@ public class CategoryController {
 	@PostMapping("/categories")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
+	@PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
 	public CategoryDTO saveCategory(@RequestBody CategoryDTO newCategoryDTO) {
 		Category newCategory = categoryService.convertToEntity(newCategoryDTO);
 		Category categoryCreated = categoryService.saveCategory(newCategory);
@@ -73,6 +75,7 @@ public class CategoryController {
 	}
 
 	@PutMapping("/categories/{categoryId}")
+	@PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
 	public CategoryDTO updateCategory(@RequestBody CategoryDTO newDataCategoryDTO, @PathVariable long categoryId) {
 		Category newDataCategory = categoryService.convertToEntity(newDataCategoryDTO);
 		Category categoryUpdated = categoryService.updateCategory(categoryId, newDataCategory);
@@ -83,6 +86,7 @@ public class CategoryController {
 	}
 
 	@DeleteMapping("/categories/{categoryId}")
+	@PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
 	public ResponseEntity<Void> deleteCategoryById(@PathVariable long categoryId) {
 		boolean result = categoryService.deleteCategoryById(categoryId);
 		return (result) ? new ResponseEntity<Void>(HttpStatus.OK) : new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
