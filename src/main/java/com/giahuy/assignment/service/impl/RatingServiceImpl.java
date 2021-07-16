@@ -11,7 +11,6 @@ import com.giahuy.assignment.DTO.RatingDTO;
 import com.giahuy.assignment.entity.Product;
 import com.giahuy.assignment.entity.Rating;
 import com.giahuy.assignment.entity.Rating.RatingId;
-import com.giahuy.assignment.exception.DataNotFoundException;
 import com.giahuy.assignment.entity.User;
 import com.giahuy.assignment.repository.RatingRepository;
 import com.giahuy.assignment.service.ProductService;
@@ -98,18 +97,18 @@ public class RatingServiceImpl implements RatingService {
 	}
 
 	@Override
-	public List<Rating> searchByProductId(long productId) {
-		return ratingRepo.findByProductId(productId);
+	public List<Rating> getRatingByProductId(long productId) {
+		return ratingRepo.findByRatingIdProductId(productId);
 	}
 
 	@Override
-	public List<Rating> searchByCustomerId(long customerId) {
-		return ratingRepo.findByCustomerId(customerId);
+	public List<Rating> getRatingByCustomerId(long customerId) {
+		return ratingRepo.findByRatingIdCustomerId(customerId);
 	}
 
 	@Override
-	public Rating searchByProductIdAndCustomerId(long productId, long customerId) {
-		return ratingRepo.findByProductIdAndCustomerId(productId, customerId);
+	public Rating getRatingByRatingId(RatingId ratingId) {
+		return ratingRepo.findById(ratingId).orElse(null);
 	}
 
 }

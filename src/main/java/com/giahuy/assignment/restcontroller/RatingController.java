@@ -46,17 +46,18 @@ public class RatingController {
 			@RequestParam(required = false) Long customerId) {
 
 		if (productId != null && customerId != null) {
+			RatingId ratingId = new RatingId(customerId, productId);
 			List<RatingDTO> ratings = new ArrayList<RatingDTO>();
-			Rating rating = ratingService.searchByProductIdAndCustomerId(productId, customerId);
+			Rating rating = ratingService.getRatingByRatingId(ratingId);
 			ratings.add(ratingService.convertToDTO(rating));
 			return ratings;
 		}
 		if (productId != null) {
-			List<Rating> ratingList = ratingService.searchByProductId(productId);
+			List<Rating> ratingList = ratingService.getRatingByProductId(productId);
 			return ratingList.stream().map(ratingService::convertToDTO).collect(Collectors.toList());
 		}
 		if (customerId != null) {
-			List<Rating> ratingList = ratingService.searchByCustomerId(customerId);
+			List<Rating> ratingList = ratingService.getRatingByCustomerId(customerId);
 			return ratingList.stream().map(ratingService::convertToDTO).collect(Collectors.toList());
 		}
 		return null;

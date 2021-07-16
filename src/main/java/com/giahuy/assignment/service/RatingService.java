@@ -19,9 +19,9 @@ public interface RatingService {
 
 	public Rating convertToEntity(RatingDTO ratingDTO);
 
-	public Rating searchByProductIdAndCustomerId(long productId, long customerId);
+	public Rating getRatingByRatingId(RatingId ratingId);
 
-	public List<Rating> searchByProductId(long productId);
+	public List<Rating> getRatingByProductId(long productId);
 
-	public List<Rating> searchByCustomerId(long customerId);
+	public List<Rating> getRatingByCustomerId(long customerId);
 }
