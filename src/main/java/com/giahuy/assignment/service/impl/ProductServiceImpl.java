@@ -54,6 +54,7 @@ public class ProductServiceImpl implements ProductService{
 								product.setName(productNewData.getName());
 								product.setPrice(productNewData.getPrice());
 								product.setRatingPoint(productNewData.getRatingPoint());
+								product.setQuantity(productNewData.getQuantity());
 								product.setUpdatedDate(LocalDateTime.now());
 								return productRepository.save(product);
 		}).orElse(null);
@@ -64,7 +65,7 @@ public class ProductServiceImpl implements ProductService{
 //		}
 //		return null;
 	}
-
+	
 	@Override
 	public boolean deleteProductById(long productId) {
 		return productRepository.findById(productId).map(product -> {

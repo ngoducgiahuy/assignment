@@ -23,6 +23,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "user",schema = "public", uniqueConstraints = {@UniqueConstraint(columnNames = "email"),
@@ -63,6 +64,11 @@ public class User {
 	@JsonIgnore
 	private List<Rating> ratings = new ArrayList<Rating>();
 	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
+	@JsonManagedReference(value="user-order")
+	private List<Order> orders = new ArrayList<Order>();
+	
 	public User() {
 		
 	}
@@ -78,12 +84,9 @@ public class User {
 		this.name = name;
 	}
 
-	
-
 	public User(long id, @Size(min = 3, max = 20) String username, @Email String email, String password, String phone,
-			boolean banned, String address, @Size(min = 2, max = 80) String name, Set<Role> roles,
-			List<Rating> ratings) {
-		super();
+			boolean banned, String address, @Size(min = 2, max = 80) String name, Set<Role> roles, List<Rating> ratings,
+			List<Order> orders) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
@@ -94,6 +97,7 @@ public class User {
 		this.name = name;
 		this.roles = roles;
 		this.ratings = ratings;
+		this.orders = orders;
 	}
 
 	public List<Rating> getRatings() {
@@ -175,7 +179,4 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-	
-	
-	
 }

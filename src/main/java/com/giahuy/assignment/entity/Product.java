@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="product")
@@ -41,6 +42,8 @@ public class Product {
 	
 	private String image;
 	
+	private int quantity;
+	
 	@Column(name="created_date")
 	private LocalDateTime createdDate;	
 	
@@ -51,12 +54,17 @@ public class Product {
 	@JsonIgnore
 	private List<Rating> ratings = new ArrayList<Rating>();
 	
-
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
+	@JsonManagedReference(value="product-orderdetail")
+	private List<OrderDetail> orderDetails = new ArrayList<>();
+	
 	public Product() {
 	}
 
 	public Product(long id, String name, Category category, String description, Float price, Float ratingPoint,
-			String image, LocalDateTime createdDate, LocalDateTime updatedDate, List<Rating> ratings) {
+			String image, int quantity, LocalDateTime createdDate, LocalDateTime updatedDate, List<Rating> ratings,
+			List<OrderDetail> orderDetails) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -65,9 +73,11 @@ public class Product {
 		this.price = price;
 		this.ratingPoint = ratingPoint;
 		this.image = image;
+		this.quantity = quantity;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
 		this.ratings = ratings;
+		this.orderDetails = orderDetails;
 	}
 
 	public long getId() {
@@ -149,7 +159,20 @@ public class Product {
 	public void setRatings(List<Rating> ratings) {
 		this.ratings = ratings;
 	}
-	
-	
-	
+
+	public List<OrderDetail> getOrderDetails() {
+		return orderDetails;
+	}
+
+	public void setOrderDetails(List<OrderDetail> orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 }

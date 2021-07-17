@@ -52,19 +52,6 @@ public class Category {
 		this.description = description;
 		this.products = products;
 	}
-	
-	
-
-	public Category(long id, String name, String description) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-	}
-
-
-
-
 
 	public long getId() {
 		return id;

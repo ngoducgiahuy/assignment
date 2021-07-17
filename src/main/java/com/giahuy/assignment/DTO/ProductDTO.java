@@ -9,6 +9,7 @@ public class ProductDTO {
 	private String description;
 	private Float price;
 	private Float ratingPoint;
+	private int quantity;
 	private LocalDateTime createdDate;
 	private LocalDateTime updatedDate;
 	public long getId() {
@@ -59,6 +60,10 @@ public class ProductDTO {
 	public void setUpdatedDate(LocalDateTime updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-	
-	
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 }
