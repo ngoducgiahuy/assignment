@@ -14,14 +14,12 @@ import com.giahuy.assignment.entity.User;
 
 public class UserDetailsImpl implements UserDetails{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private long id;
 	private String username;
 	private String email;
+	private boolean active;
 	
 	@JsonIgnore
 	private String password;
@@ -41,6 +39,19 @@ public class UserDetailsImpl implements UserDetails{
 		this.authorities = authorities;
 	}
 	
+	public UserDetailsImpl(long id, String username, String email, boolean active, String password,
+			Collection<? extends GrantedAuthority> authorities) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.active = active;
+		this.password = password;
+		this.authorities = authorities;
+	}
+
+
+
 	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role->new SimpleGrantedAuthority(role.getName().name()))
@@ -50,6 +61,7 @@ public class UserDetailsImpl implements UserDetails{
 				user.getId(),
 				user.getUsername(),
 				user.getEmail(),
+				user.getActive(),
 				user.getPassword(),
 				authorities
 				);
@@ -85,7 +97,6 @@ public class UserDetailsImpl implements UserDetails{
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -108,5 +119,12 @@ public class UserDetailsImpl implements UserDetails{
 		UserDetailsImpl user = (UserDetailsImpl) obj;
 		return Objects.equals(id, user.id);
 	}
-	
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 }

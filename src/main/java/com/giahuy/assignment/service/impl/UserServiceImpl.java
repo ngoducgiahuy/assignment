@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.giahuy.assignment.DTO.UserDTO;
@@ -27,10 +28,10 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
 	@Override
 	public List<User> getAllUser() {
-		return userRepository.findAll();
+		return userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService{
 	public User updateUser(long userId, User userNewData) {
 		return userRepository.findById(userId).map(user -> {
 							user.setAddress(userNewData.getAddress());
-							user.setBanned(userNewData.getBanned());
+							user.setActive(userNewData.getActive());
 							user.setName(userNewData.getName());
 							user.setPhone(userNewData.getPhone());
 							user.setRoles(userNewData.getRoles());
@@ -70,7 +71,9 @@ public class UserServiceImpl implements UserService{
 		for (Role userRole : user.getRoles()) {
 			role.add(userRole.getName().name());
 		}
+		String roleString = roleToString(role);
 		userDTO.setRole(role);
+		userDTO.setRoleString(roleString);
 		return userDTO;
 	}
 	
@@ -80,6 +83,16 @@ public class UserServiceImpl implements UserService{
 		Set<Role> roles = this.setRoleForEntity(userDTO.getRole());
 		user.setRoles(roles);
 		return user;
+	}
+	
+	private String roleToString(Set<String> roles) {
+		StringBuilder result = new StringBuilder("");
+		for (String role : roles) {
+			String roleDto = role.replace("ROLE_", "");
+			result.append(roleDto + ",");
+		}
+		result.setLength(result.length()-1); 
+		return result.toString();
 	}
 	
 
@@ -113,6 +126,4 @@ public class UserServiceImpl implements UserService{
 		}
 		return roles;
 	}
-
-	
 }

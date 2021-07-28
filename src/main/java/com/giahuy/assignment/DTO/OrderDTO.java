@@ -4,24 +4,27 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.giahuy.assignment.entity.OrderDetail;
-
 public class OrderDTO {
 	private long id;
 	private long customerId;
+	private String customerUsername;
 	private String orderAddress;
 	private String note;
 	private Float totalPrice;
 	private LocalDateTime orderDate;
 	private LocalDateTime receivedDate;
 	private int status;
-	private List<OrderDetail> orderDetails = new ArrayList<OrderDetail>();
+	private List<OrderDetailDTO> orderDetails = new ArrayList<OrderDetailDTO>();
 	
-	public OrderDTO(long id, long customerId, String orderAddress, String note, Float totalPrice,
-			LocalDateTime orderDate, LocalDateTime receivedDate, int status, List<OrderDetail> orderDetails) {
+	
+
+	public OrderDTO(long id, long customerId, String customerUsername, String orderAddress, String note,
+			Float totalPrice, LocalDateTime orderDate, LocalDateTime receivedDate, int status,
+			List<OrderDetailDTO> orderDetails) {
 		super();
 		this.id = id;
 		this.customerId = customerId;
+		this.customerUsername = customerUsername;
 		this.orderAddress = orderAddress;
 		this.note = note;
 		this.totalPrice = totalPrice;
@@ -76,10 +79,10 @@ public class OrderDTO {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public List<OrderDetail> getOrderDetails() {
+	public List<OrderDetailDTO> getOrderDetails() {
 		return orderDetails;
 	}
-	public void setOrderDetails(List<OrderDetail> orderDetails) {
+	public void setOrderDetails(List<OrderDetailDTO> orderDetails) {
 		this.orderDetails = orderDetails;
 	}
 
@@ -90,5 +93,12 @@ public class OrderDTO {
 	public void setCustomerId(long customerId) {
 		this.customerId = customerId;
 	}
-	
+
+	public String getCustomerUsername() {
+		return customerUsername;
+	}
+
+	public void setCustomerUsername(String customerUsername) {
+		this.customerUsername = customerUsername;
+	}
 }

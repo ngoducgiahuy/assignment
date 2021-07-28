@@ -19,9 +19,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Rating {
 	@Embeddable
 	public static class RatingId implements Serializable {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = -8961090089148306041L;
 
 		@Column(name = "customer_id", nullable = false, updatable = false)
@@ -30,21 +27,15 @@ public class Rating {
 		@Column(name = "product_id", nullable = false, updatable = false)
 		private Long productId;
 		
-		
-
 		public RatingId() {
 			super();
 		}
-
-		
 		
 		public RatingId(Long customerId, Long productId) {
 			this.customerId = customerId;
 			this.productId = productId;
 		}
-
-
-
+		
 		public Long getCustomerId() {
 			return customerId;
 		}
@@ -76,8 +67,6 @@ public class Rating {
 			result = 24 * result + productId.hashCode();
 			return result;
 		}
-		
-		
 	}
 	
 	@EmbeddedId
@@ -91,9 +80,8 @@ public class Rating {
 	
 	private String comment;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="customer_id", insertable = false, updatable = false)
-	@JsonBackReference
 	private User user;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -106,7 +94,6 @@ public class Rating {
 	
 	public Rating() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Rating(RatingId ratingId, LocalDateTime ratingDate, int ratingPoint, String comment, User user,

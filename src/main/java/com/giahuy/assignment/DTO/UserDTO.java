@@ -11,7 +11,8 @@ public class UserDTO {
 	private String name;
 	private String phone;
 	private String address;
-	private boolean banned;
+	private boolean active;
+	private String roleString;
 	private Set<String> role;
 
 	
@@ -80,13 +81,19 @@ public class UserDTO {
 		this.address = address;
 	}
 
-	public boolean getBanned() {
-		return banned;
+	public boolean getActive() {
+		return active;
 	}
 
-	public void setBanned(boolean banned) {
-		this.banned = banned;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
-	
-	
+
+	public String getRoleString() {
+		return roleString;
+	}
+
+	public void setRoleString(String roleString) {
+		this.roleString = roleString;
+	}
 }

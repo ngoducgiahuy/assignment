@@ -1,14 +1,11 @@
 package com.giahuy.assignment.DTO;
 
-//import lombok.Getter;
-//import lombok.Setter;
 
 
 public class CategoryDTO {
 	private long id;
 	private String name;
 	private String description;
-//	private List<ProductList> products;
 	public long getId() {
 		return id;
 	}

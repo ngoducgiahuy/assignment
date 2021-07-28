@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ import com.giahuy.assignment.security.services.UserDetailsImpl;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "*")
 public class AuthController {
 	private AuthenticationManager authenticationManager;
 	private UserRepository userRepository;
@@ -59,6 +61,11 @@ public class AuthController {
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		// Get the principal and parse into our defined class named UserDetails
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		
+		boolean userActive = userDetails.isActive();
+		if(!userActive) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Account banned!"));
+		}
 		// Get roles
 		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
@@ -69,19 +76,37 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
+		boolean errorFlag = false;
+		StringBuilder errorMessage = new StringBuilder("Error: ");
+		
 		// Check if username is valid?
 		if (userRepository.existsByUsername(signupRequest.getUsername())) {
-			return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+			errorMessage.append("Username is already taken! ");
+			errorFlag = true;
 		}
 		// Check if email is valid?
 		if (userRepository.existsByEmail(signupRequest.getEmail())) {
-			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+			errorMessage.append("Email is already in use! ");
+			errorFlag = true;
+		}
+		
+		if (signupRequest.getUsername().contains(" ")) {
+			errorMessage.append(" Username cannot contain spaces!");
+			errorFlag = true;
+		}
+		
+		if(errorFlag==true) {
+			return ResponseEntity.badRequest().body(new MessageResponse(errorMessage.toString()));
 		}
 		
 		// Create new User Object for register
+		Set<String> defautRoles = new HashSet<String>();
+		defautRoles.add("user");
+		signupRequest.setRole(defautRoles);
+		
 		User user = new User(signupRequest.getUsername(), signupRequest.getEmail(),
 				encoder.encode(signupRequest.getPassword()), signupRequest.getPhone(), signupRequest.getAddress(),
-				signupRequest.getName());
+				signupRequest.getName(),true);
 		Set<String> strRoles = signupRequest.getRole();
 		Set<Role> roles = new HashSet<>();
 		

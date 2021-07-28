@@ -13,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="category")
@@ -35,7 +34,6 @@ public class Category {
 
 	public Category() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Category(long id) {

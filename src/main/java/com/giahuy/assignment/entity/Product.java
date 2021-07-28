@@ -12,9 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,7 +43,9 @@ public class Product {
 	@Column(name="rating_point")
 	private Float ratingPoint;
 	
-	private String image;
+	@Lob
+	@Type(type="org.hibernate.type.BinaryType")
+	private byte[] image;
 	
 	private int quantity;
 	
@@ -63,7 +68,7 @@ public class Product {
 	}
 
 	public Product(long id, String name, Category category, String description, Float price, Float ratingPoint,
-			String image, int quantity, LocalDateTime createdDate, LocalDateTime updatedDate, List<Rating> ratings,
+			byte[] image, int quantity, LocalDateTime createdDate, LocalDateTime updatedDate, List<Rating> ratings,
 			List<OrderDetail> orderDetails) {
 		super();
 		this.id = id;
@@ -79,6 +84,8 @@ public class Product {
 		this.ratings = ratings;
 		this.orderDetails = orderDetails;
 	}
+
+
 
 	public long getId() {
 		return id;
@@ -128,13 +135,19 @@ public class Product {
 		this.ratingPoint = ratingPoint;
 	}
 
-	public String getImage() {
+	
+
+	public byte[] getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+
+
+	public void setImage(byte[] image) {
 		this.image = image;
 	}
+
+
 
 	public LocalDateTime getCreatedDate() {
 		return createdDate;

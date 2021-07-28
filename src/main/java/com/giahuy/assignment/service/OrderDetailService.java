@@ -15,4 +15,8 @@ public interface OrderDetailService {
 	public OrderDetail getOrderDetailByOrderDetailId(OrderDetailId orderDetailId);
 
 	public List<OrderDetail> getOrderDetailByOrderId(long orderId);
+	
+	public OrderDetail convertToEntityWithoutOrderId(OrderDetailDTO orderDetailDTO);
+	
+	public boolean checkIfProductIdExistInOrder(long productId);
 }

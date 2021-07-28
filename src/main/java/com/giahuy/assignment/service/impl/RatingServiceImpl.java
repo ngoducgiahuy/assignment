@@ -39,7 +39,6 @@ public class RatingServiceImpl implements RatingService {
 
 	@Override
 	public Rating saveRating(Rating rating) {
-		if(ratingRepo.existsById(rating.getRatingId())) return null;
 		Rating newRatingCheck = this.checkAndSetUserAndProductForEntity(rating);
 		if (newRatingCheck != null) {
 			newRatingCheck.setRatingDate(LocalDateTime.now());
@@ -73,6 +72,8 @@ public class RatingServiceImpl implements RatingService {
 		RatingDTO ratingDTO = modelMapper.map(rating, RatingDTO.class);
 		ratingDTO.setCustomerId(rating.getRatingId().getCustomerId());
 		ratingDTO.setProductId(rating.getRatingId().getProductId());
+		ratingDTO.setCustomerName(rating.getUser().getName());
+		ratingDTO.setCustomerUserName(rating.getUser().getUsername());
 		return ratingDTO;
 	}
 
@@ -95,15 +96,20 @@ public class RatingServiceImpl implements RatingService {
 		}
 		return null;
 	}
+	
+	@Override
+	public Float getRatingAvg(long productId) {
+		return ratingRepo.findAvgRating(productId).orElse(null);
+	}
 
 	@Override
 	public List<Rating> getRatingByProductId(long productId) {
-		return ratingRepo.findByRatingIdProductId(productId);
+		return ratingRepo.findByRatingIdProductId(productId).orElse(null);
 	}
 
 	@Override
 	public List<Rating> getRatingByCustomerId(long customerId) {
-		return ratingRepo.findByRatingIdCustomerId(customerId);
+		return ratingRepo.findByRatingIdCustomerId(customerId).orElse(null);
 	}
 
 	@Override

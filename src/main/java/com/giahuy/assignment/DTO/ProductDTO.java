@@ -2,6 +2,10 @@ package com.giahuy.assignment.DTO;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Lob;
+
+import org.hibernate.annotations.Type;
+
 public class ProductDTO {
 	private long id;
 	private String name;
@@ -12,6 +16,10 @@ public class ProductDTO {
 	private int quantity;
 	private LocalDateTime createdDate;
 	private LocalDateTime updatedDate;
+	@Lob
+	@Type(type="org.hibernate.type.BinaryType")
+	private byte[] image;
+	
 	public long getId() {
 		return id;
 	}
@@ -66,4 +74,12 @@ public class ProductDTO {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	public byte[] getImage() {
+		return image;
+	}
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+	
+	
 }

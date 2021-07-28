@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.giahuy.assignment.DTO.ProductDTO;
@@ -29,7 +30,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public List<Product> getAllProduct() {
-		return productRepository.findAll();
+		return productRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
 	}
 
 	@Override
@@ -58,12 +59,6 @@ public class ProductServiceImpl implements ProductService{
 								product.setUpdatedDate(LocalDateTime.now());
 								return productRepository.save(product);
 		}).orElse(null);
-//		if(productRepository.existsById(productId)) {
-//			productNewData.setId(productId);
-//			productNewData.setUpdatedDate(LocalDateTime.now());
-//			return productRepository.save(productNewData);
-//		}
-//		return null;
 	}
 	
 	@Override
@@ -101,7 +96,9 @@ public class ProductServiceImpl implements ProductService{
 		List<Product> resultList = productRepository.findByCategory_Id(categoryId);
 		return (resultList.isEmpty()) ? null : resultList;
 	}
-	
 
-	
+	@Override
+	public Product findProductByName(String name) {
+		return productRepository.findByName(name).orElse(null);
+	}
 }

@@ -24,4 +24,6 @@ public interface RatingService {
 	public List<Rating> getRatingByProductId(long productId);
 
 	public List<Rating> getRatingByCustomerId(long customerId);
+	
+	public Float getRatingAvg(long productId);
 }

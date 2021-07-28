@@ -21,4 +21,6 @@ public interface ProductService {
 	public Product convertToEntity(ProductDTO productDTO);
 	
 	public List<Product> getProductsByCategoryId(long categoryId);
+	
+	public Product findProductByName(String name);
 }

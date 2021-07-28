@@ -20,5 +20,5 @@ public interface CategoryService {
 	
 	public Category convertToEntity(CategoryDTO categoryDTO);
 	
-	public List<Category> findCategoryByName(String name);
+	public Category findCategoryByName(String name);
 }

@@ -32,6 +32,10 @@ public class OrderDetail {
 			this.orderId = orderId;
 			this.productId = productId;
 		}
+		
+		public OrderDetailId(Long productId) {
+			this.productId = productId;
+		}
 
 		public Long getOrderId() {
 			return orderId;
@@ -80,13 +84,11 @@ public class OrderDetail {
 	
 	@MapsId("orderId")
 	@ManyToOne(fetch=FetchType.LAZY)
-//	@JoinColumn(name="order_id")
 	@JsonBackReference(value = "order-orderdetail")
 	private Order order;
 	
 	@MapsId("productId")
 	@ManyToOne(fetch=FetchType.LAZY)
-//	@JoinColumn(name="product_id")
 	@JsonBackReference(value = "product-orderdetail")
 	private Product product;
 

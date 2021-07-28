@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.giahuy.assignment.DTO.CategoryDTO;
@@ -22,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	@Override
 	public List<Category> getAllCategory() {
-		return categoryRepository.findAll();
+		return categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
 	}
 
 	@Override
@@ -65,11 +66,7 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public List<Category> findCategoryByName(String name) {
-		List<Category> categoriesByName = categoryRepository.findByName(name);
-		return (categoriesByName.isEmpty()) ? null : categoriesByName;
+	public Category findCategoryByName(String name) {
+		return categoryRepository.findByName(name).orElse(null);
 	}
-	
-	
-	
 }

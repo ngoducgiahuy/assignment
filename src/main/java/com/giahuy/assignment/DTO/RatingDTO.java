@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 public class RatingDTO {
 	private long customerId;
+	private String customerName;
+	private String customerUserName;
 	private long productId;
 	private LocalDateTime ratingDate;
 	private int ratingPoint;
@@ -38,6 +40,18 @@ public class RatingDTO {
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+	public String getCustomerUserName() {
+		return customerUserName;
+	}
+	public void setCustomerUserName(String customerUserName) {
+		this.customerUserName = customerUserName;
 	}
 	
 	

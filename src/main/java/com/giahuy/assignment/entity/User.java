@@ -47,7 +47,7 @@ public class User {
 	
 	private String phone;
 	
-	private boolean banned;
+	private boolean active;
 	
 	private String address;
 	
@@ -75,24 +75,26 @@ public class User {
 
 	public User(@NotBlank @Size(min = 3, max = 20) String username, @NotBlank @Email String email,
 			@NotBlank @Size(min = 6, max = 30) String password, @NotBlank String phone, String address,
-			@Size(min = 2, max = 80) String name) {
+			@Size(min = 2, max = 80) String name, boolean active) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.phone = phone;
 		this.address = address;
 		this.name = name;
+		this.active = active;
 	}
-
+	
 	public User(long id, @Size(min = 3, max = 20) String username, @Email String email, String password, String phone,
-			boolean banned, String address, @Size(min = 2, max = 80) String name, Set<Role> roles, List<Rating> ratings,
+			boolean active, String address, @Size(min = 2, max = 80) String name, Set<Role> roles, List<Rating> ratings,
 			List<Order> orders) {
+		super();
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.phone = phone;
-		this.banned = banned;
+		this.active = active;
 		this.address = address;
 		this.name = name;
 		this.roles = roles;
@@ -156,12 +158,21 @@ public class User {
 		this.phone = phone;
 	}
 
-	public boolean getBanned() {
-		return banned;
+
+	public boolean getActive() {
+		return active;
 	}
 
-	public void setBanned(boolean banned) {
-		this.banned = banned;
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 
 	public String getAddress() {
